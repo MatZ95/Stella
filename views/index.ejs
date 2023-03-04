@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <form action="/stars/new" method="post">
+      <p>
+        <input type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" />
+      </p>
+      <p><input type="text" name="starsType" placeholder="Jaki to typ?" /></p>
+      <p><button type="submit">Dodaj</button></p>
+    </form>
+    <% if (data != null) {data.forEach(item =>{ %> <%=item.starsName%> <%=
+    item.starsType %> <% }); }%>
+  </body>
+</html>
