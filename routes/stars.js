@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const schemas = require("../models/schemas.js");
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient, ObjectId } = require("mongodb");
 const { mongoUrl, dbName } = require('../config.js');
 
 /* GET home page. */
@@ -29,8 +29,6 @@ router.post("/new", async (req, res) => {
     }
   });
 
-
-
   res.redirect("/");
 });
 
@@ -39,7 +37,6 @@ router.get('/get', async (req, res) => {
     const client = await MongoClient.connect(mongoUrl);
     const db = client.db(dbName);
 
-    // Query the database for the data you want to retrieve
     const data = await db.collection('stars').find().toArray();
 
     res.json(data);
@@ -52,4 +49,21 @@ router.get('/get', async (req, res) => {
   }
 
 });
+
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl);
+    const db = client.db(dbName);
+
+    const result = await db.collection('stars').deleteOne({ _id: new ObjectId(req.params.id) });
+
+    res.json({ message: 'Deleted successfully', result });
+    client.close();
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
