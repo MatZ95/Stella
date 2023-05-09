@@ -23,10 +23,8 @@ function addStars(numStars) {
                 star.style.left = Math.floor(Math.random() * screenWidth) + 'px';
                 star.style.top = Math.floor(Math.random() * screenHeight) + 'px';
 
-                // get the name and description for this star image
                 const { name, description, constellation } = data[i % data.length];
 
-                // set the title attribute to display the name and description
                 star.title = `Star ${i + 1}\nName: ${name}\nDescription: ${description}\nConstellation: ${constellation}`;
 
                 document.body.appendChild(star);
