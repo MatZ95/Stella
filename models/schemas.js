@@ -7,6 +7,7 @@ let starsSchema = new schema({
   name: { type: String, require: true },
   type: { type: String, require: true },
 });
+
 let usersSchema = new schema({
   login: { type: String, require: true },
   password: { type: String, require: true },
@@ -14,8 +15,13 @@ let usersSchema = new schema({
 
 let stars = mongoose.model("stars", starsSchema, "stars");
 let users = mongoose.model("users", usersSchema, "users");
-let mySchemas = { stars: stars, users: users };
+
+// let mySchemas = { stars: stars, users: users };
 
 // Powyżej szukaj gdyby był błąd
 
-module.exports = mySchemas;
+module.exports = {
+  starsSchema,
+  usersSchema,
+  stars
+};

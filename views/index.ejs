@@ -9,7 +9,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="/js/scripts.js"></script>
 </head>
 
 <body>
@@ -26,19 +25,29 @@
   <table class="table table-striped table-bordered table-hover" id="data-table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Star Name</th>
-        <th>Star Type</th>
-        <th>Action</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
+      <% stars.forEach(star=> { %>
+        <tr>
+          <td>
+            <%= star.name %>
+          </td>
+          <td>
+            <%= star.type %>
+          </td>
+          <td>
+            <form action="/stars/<%= star._id %>?_method=DELETE" method="POST">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
     </tbody>
   </table>
-
-  <script>
-    populateTable();
-  </script>
 
 </body>
 

@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const bodyParser = require("body-parser");
 const schemas = require("../models/schemas.js");
-const { MongoClient, ObjectId } = require("mongodb");
-const { mongoUrl, dbName } = require('../config.js');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -25,44 +22,23 @@ router.post("/new", async (req, res) => {
         type: starsType,
       });
 
-      let saveStars = await newStars.save();
+      await newStars.save();
     }
   });
 
   res.redirect("/");
 });
 
-router.get('/get', async (req, res) => {
+router.delete('/:id', async (req, res) => {
+  let stars = schemas.stars;
+  let starId = req.params.id;
+
   try {
-    const client = await MongoClient.connect(mongoUrl);
-    const db = client.db(dbName);
-
-    const data = await db.collection('stars').find().toArray();
-
-    res.json(data);
-
-    client.close();
-
+    await stars.deleteOne({ _id: starId });
+    res.redirect('/');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Server Error');
-  }
-
-});
-
-router.delete('/delete/:id', async (req, res) => {
-  try {
-    const client = await MongoClient.connect(mongoUrl);
-    const db = client.db(dbName);
-
-    const result = await db.collection('stars').deleteOne({ _id: new ObjectId(req.params.id) });
-
-    res.json({ message: 'Deleted successfully', result });
-    client.close();
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
+    res.sendStatus(500);
   }
 });
 
