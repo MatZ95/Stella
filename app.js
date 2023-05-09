@@ -20,11 +20,6 @@ app.use(methodOverride('_method'));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-//To można usunąć jak nie będzie gówno działać...
-//app.get("/", (req, res) => {
-//  res.render("./routes/index");
-//});
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
