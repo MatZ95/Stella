@@ -5,7 +5,8 @@ var schema = mongoose.Schema;
 
 let starsSchema = new schema({
   name: { type: String, require: true },
-  type: { type: String, require: true },
+  description: { type: String, require: true },
+  constellation: { type: String, require: true }
 });
 
 let usersSchema = new schema({

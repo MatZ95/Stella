@@ -28,16 +28,24 @@
   <div class="row">
     <div class="col-md-8">
       <form action="/stars/new" method="post">
-        <p><input type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" /></p>
-        <p><input type="text" name="starsType" placeholder="Jaki to typ?" /></p>
+        <p>
+          <input type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" />
+          <input type="text" name="starsDescription" placeholder="Podaj opis gwiazny" />
+          <input type="text" name="starsConstellation" placeholder="Podaj konstelację" />
+        </p>
         <p><button type="submit">Dodaj</button></p>
       </form>
     </div>
     <div class="col-md-4">
       <% stars.forEach(star=> { %>
         <form id="edit-form-<%= star._id %>" action="/stars/<%= star._id %>/edit" method="POST" style="display: none;">
-          <p><input type="text" name="starsName" value="<%= star.name %>" placeholder="Podaj nazwę gwiazdy" /></p>
-          <p><input type="text" name="starsType" value="<%= star.type %>" placeholder="Jaki to typ?" /></p>
+          <p>
+            <input type="text" name="starsName" value="<%= star.name %>" placeholder="Podaj nazwę gwiazdy" />
+            <input type="text" name="starsDescription" value="<%= star.description %>"
+              placeholder="Podaj opis gwiazdy" />
+            <input type="text" name="starsConstellation" value="<%= star.constellation %>"
+              placeholder="Podaj konstelację" />
+          </p>
           <button type="submit">Save</button>
         </form>
         <% }); %>
@@ -47,8 +55,9 @@
   <table class="table table-bordered" id="data-table">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
+        <th>Star Name</th>
+        <th>Star Description</th>
+        <th>Star Constellation</th>
         <th></th>
       </tr>
     </thead>
@@ -59,18 +68,27 @@
             <%= star.name %>
           </td>
           <td>
-            <%= star.type %>
+            <%= star.description %>
           </td>
           <td>
+            <%= star.constellation %>
+          </td>
+          <td>
+            <button type="button" onclick="showEditForm('<%= star._id %>')">Edit</button>
             <form action="/stars/<%= star._id %>?_method=DELETE" method="POST">
               <button type="submit">Delete</button>
             </form>
-            <button type="button" onclick="showEditForm('<%= star._id %>')">Edit</button>
           </td>
         </tr>
         <% }); %>
     </tbody>
   </table>
+
+  <label for="moon-phase">Moon Phase:</label>
+  <input type="range" id="moon-phase" min="0" max="29" value="0">
+  <div id="moon"></div>
+  <img src="/images/moon-phases/new-moon.png" alt="moon" id="moon-image">
+  <script src="/scripts/moonPhases.js"></script>
 
   <input type="hidden" id="num-stars">
   <script src="/scripts/addStars.js"></script>

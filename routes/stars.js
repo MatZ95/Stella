@@ -9,7 +9,8 @@ router.get("/", function (req, res, next) {
 
 router.post("/new", async (req, res) => {
   let starsName = req.body.starsName;
-  let starsType = req.body.starsType;
+  let starsDescription = req.body.starsDescription;
+  let starsConstellation= req.body.starsConstellation;
   let stars = schemas.stars;
 
   let qry = { name: starsName };
@@ -19,7 +20,8 @@ router.post("/new", async (req, res) => {
       // Można dodać gwiazdę
       let newStars = new schemas.stars({
         name: starsName,
-        type: starsType,
+        description: starsDescription,
+        constellation: starsConstellation
       });
 
       await newStars.save();
@@ -61,7 +63,12 @@ router.get('/:id/edit', async (req, res, next) => {
 router.post('/:id/edit', async (req, res) => {
   try {
     const starId = req.params.id;
-    const update = { name: req.body.starsName, type: req.body.starsType };
+    const update = {
+      name: req.body.starsName,
+      description: req.body.starsDescription,
+      constellation: req.body.starsConstellation
+    };
+
     const UpdatedStar = await schemas.stars.findByIdAndUpdate(starId, update, { new: true });
 
     if (!UpdatedStar) {
