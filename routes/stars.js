@@ -75,4 +75,14 @@ router.post('/:id/edit', async (req, res) => {
   }
 });
 
+router.get('/count', async (req, res, next) => {
+  try {
+    const count = await schemas.stars.countDocuments();
+    res.send({ count });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;
