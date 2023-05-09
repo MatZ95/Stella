@@ -92,4 +92,14 @@ router.get('/count', async (req, res, next) => {
   }
 });
 
+router.get('/stardata', async (req, res, next) => {
+  try {
+    const stars = await schemas.stars.find({});
+    res.send(stars);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;
