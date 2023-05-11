@@ -30,6 +30,11 @@ body {
   z-index: 2;
 }
 
+.glowing {
+  box-shadow: 0px 0px 40px 20px yellow;
+  border-radius: 100%;
+}
+
 label {
   color: #fff;
 }

@@ -27,6 +27,10 @@ function addStars(numStars) {
 
                 star.title = `Star ${i + 1}\nName: ${name}\nDescription: ${description}\nConstellation: ${constellation}`;
 
+                star.addEventListener('click', () => {
+                    star.classList.toggle('glowing');
+                });
+
                 document.body.appendChild(star);
             }
         })
