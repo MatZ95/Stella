@@ -18,12 +18,17 @@
     <h3>
       <%= title %>
     </h3>
+    <label for="moon-phase">Moon Phase:</label>
+      <input type="range" id="moon-phase" min="0" max="29" value="0">
     <ul>
       <li><a href="#">Link1</a></li>
       <li><a href="#">Link2</a></li>
       <li><a href="#">Link3</a></li>
     </ul>
   </nav>
+
+
+  <div id="container"></div>
 
   <div class="row">
     <div class="col-md-8">
@@ -84,10 +89,8 @@
     </tbody>
   </table>
 
-  <label for="moon-phase">Moon Phase:</label>
-  <input type="range" id="moon-phase" min="0" max="29" value="0">
-  <div id="moon"></div>
-  <img src="/images/moon-phases/new-moon.png" alt="moon" id="moon-image">
+
+
   <script src="/scripts/moonPhases.js"></script>
 
   <input type="hidden" id="num-stars">
