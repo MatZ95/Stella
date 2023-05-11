@@ -18,15 +18,18 @@
     <h3>
       <%= title %>
     </h3>
+    <input type="hidden" id="num-stars">
     <label for="moon-phase">Moon Phase:</label>
     <input type="range" id="moon-phase" min="0" max="29" value="15">
+    <label for="cloudiness">Cloudiness:</label>
+    <input type="range" id="cloudiness" min="0" max="10" value="5">
+    <div id="clouds"></div>
     <ul>
       <li><a href="#">Link1</a></li>
       <li><a href="#">Link2</a></li>
       <li><a href="#">Link3</a></li>
     </ul>
   </nav>
-
   <div id="container"></div>
 
   <div class="row">
@@ -89,8 +92,9 @@
   </table>
 
   <script src="/scripts/moonPhases.js"></script>
+  <script src="/scripts/addClouds.js"></script>
 
-  <input type="hidden" id="num-stars">
+
   <script src="/scripts/addStars.js"></script>
 </body>
 
