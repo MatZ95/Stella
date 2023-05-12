@@ -11,11 +11,13 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/scripts/showEditForm.js"></script>
+  <script src="/scripts/moonPhases.js"></script>
+  <script src="/scripts/addFog.js"></script>
+  <script src="/scripts/addRain.js"></script>
+  <script src="/scripts/addClouds.js"></script>
 </head>
 
 <body>
-
-
   <nav class="navbar">
     <h3>
       <%= title %>
@@ -25,9 +27,11 @@
     <input type="range" id="moon-phase" min="0" max="29" value="15">
     <label for="cloudiness">Cloudiness:</label>
     <input type="range" id="cloudiness" min="0" max="10" value="5">
+    <div id="clouds"></div>
     <label for="fog">Fog:</label>
     <input type="range" id="fog-slider" min="0" max="1" value="0">
-    <div id="clouds"></div>
+    <label for="rain">Rain:</label>
+    <input type="range" id="rain-slider" min="0" max="1" value="0">
     <ul>
       <li><a href="#">Link1</a></li>
       <li><a href="#">Link2</a></li>
@@ -37,6 +41,7 @@
 
   <div id="container"></div>
   <video id="fog-video" src="/images/fog/fog-video.mp4" autoplay loop muted></video>
+  <video id="rain-video" src="/images/rain/rain-video.mp4" autoplay loop muted></video>
   <div class="row">
     <div class="col-md-8">
       <form action="/stars/new" method="post">
@@ -96,9 +101,6 @@
     </tbody>
   </table>
 
-  <script src="/scripts/moonPhases.js"></script>
-  <script src="/scripts/addFog.js"></script>
-  <script src="/scripts/addClouds.js"></script>
   <script src="/scripts/addStars.js"></script>
 </body>
 
