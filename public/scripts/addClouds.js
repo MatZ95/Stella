@@ -1,8 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cloudinessRange = document.getElementById('cloudiness');
+    const cloudinessSlider = document.getElementById('cloudiness-slider');
+    const rainVideo = document.getElementById('rain-video');
+    const rainSlider = document.getElementById('rain-slider');
 
-    cloudinessRange.addEventListener('input', () => {
-        const cloudiness = cloudinessRange.value;
+    cloudinessSlider.addEventListener('input', () => {
+        const cloudiness = cloudinessSlider.value;
+
+        if (cloudinessSlider.value === '0') {
+            rainSlider.value = '0';
+            rainVideo.style.display = 'none';
+        }
         generateClouds(cloudiness);
     });
 
