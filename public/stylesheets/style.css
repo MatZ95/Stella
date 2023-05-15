@@ -1,6 +1,7 @@
 html,
 body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   background-color: black;
@@ -73,6 +74,10 @@ label {
   color: #fff;
 }
 
+table{
+  background-color: black;
+}
+
 table th {
   color: #fff;
 }
@@ -94,8 +99,6 @@ form {
 #edit-form {
   float: right;
 }
-
-
 
 .navbar h3 {
   margin: 0 10px;

@@ -14,10 +14,10 @@ function addStars(numStars) {
     const screenHeight = window.innerHeight;
 
     const starImages = [
-        '/images/stars/darkstar.png',
-        '/images/stars/redstar.png',
-        '/images/stars/whitestar.png',
-        '/images/stars/yellowstar.png'
+        '/images/stars/1.png',
+        '/images/stars/2.png',
+        '/images/stars/3.png',
+        '/images/stars/4.png'
     ];
 
     fetch('/stars/stardata')
