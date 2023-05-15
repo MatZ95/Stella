@@ -20,6 +20,13 @@ function addStars(numStars) {
         '/images/stars/4.png'
     ];
 
+    const glowImages = [
+        '/images/stars/5.png',
+        '/images/stars/6.png',
+        '/images/stars/7.png',
+        '/images/stars/8.png'
+    ];
+
     fetch('/stars/stardata')
         .then(res => res.json())
         .then(data => {
@@ -27,8 +34,8 @@ function addStars(numStars) {
                 const star = document.createElement('img');
                 star.classList.add('star');
 
-                const randomImageIndex = Math.floor(Math.random() * starImages.length);
-                const starImagePath = starImages[randomImageIndex];
+                let randomImageIndex = Math.floor(Math.random() * starImages.length);
+                let starImagePath = starImages[randomImageIndex];
                 star.src = starImagePath;
 
                 star.style.left = Math.floor(Math.random() * screenWidth) + 'px';
@@ -39,7 +46,18 @@ function addStars(numStars) {
                 star.title = `Star ${i + 1}\nName: ${name}\nDescription: ${description}\nConstellation: ${constellation}`;
 
                 star.addEventListener('click', () => {
-                    star.classList.toggle('glowing');
+
+                    if (star.classList.contains('glow')) {
+                        randomImageIndex = Math.floor(Math.random() * starImages.length);
+                        starImagePath = starImages[randomImageIndex];
+                        star.src = starImagePath;
+                        star.classList.remove('glow');
+                    } else {
+                        randomImageIndex = Math.floor(Math.random() * glowImages.length);
+                        glowImagePath = glowImages[randomImageIndex];
+                        star.src = glowImagePath;
+                        star.classList.add('glow');
+                    }
                 });
 
                 document.body.appendChild(star);
