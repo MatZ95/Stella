@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const phaseNames = ['new-moon', 'waxing-crescent', 'waxing-gibbous', 'first-quarter', 'full-moon', 'last-quarter', 'waning-gibbous', 'waning-crescent'];
         const phaseIndex = Math.round(phase / 4);
 
-        if (phase === '0' || phase === '29') {
+        if (phase === '0' || phase === '30') {
             return `/images/moon-phases/new-moon.png`;
         } else if (phase === '15') {
             return `/images/moon-phases/full-moon.png`;
