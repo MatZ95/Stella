@@ -10,8 +10,24 @@ let starsSchema = new schema({
 });
 
 let constellationsSchema = new schema({
-  name: { type: String, require: true },
-  description: { type: String, require: true }
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  stars: [{ type: schema.Types.ObjectId, ref: 'stars' }],
+  numberOfStars: { type: Number, default: 0 },
+});
+
+
+// Middleware to update numberOfStars before saving
+constellationsSchema.pre('save', function (next) {
+  this.numberOfStars = this.stars.length;
+  next();
+});
+
+// Middleware to update numberOfStars before findOneAndUpdate
+constellationsSchema.pre('findOneAndUpdate', function () {
+  const updatedData = this.getUpdate();
+  const stars = updatedData.stars || [];
+  this.set('numberOfStars', stars.length);
 });
 
 let usersSchema = new schema({

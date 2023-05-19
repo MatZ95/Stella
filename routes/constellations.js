@@ -7,27 +7,26 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-router.post("/new", async (req, res) => {
-  let constellationsName = req.body.constellationsName;
-  let constellationsDescription = req.body.constellationsDescription;
-  let constellations = schemas.constellations;
+router.post("/new", async (req, res, next) => {
+  try {
+    const { constellationsName, constellationsDescription, constellationStars } = req.body;
 
-  let qry = { name: constellationsName };
+    const newConstellation = new schemas.constellations({
+      name: constellationsName,
+      description: constellationsDescription,
+      stars: constellationStars,
+      numberOfStars: constellationStars.length
+    });
 
-  await constellations.findOne(qry).then(async (userData) => {
-    if (!userData) {
-      // Można dodać gwiazdę
-      let newConstellations = new schemas.constellations({
-        name: constellationsName,
-        description: constellationsDescription
-      });
+    const savedConstellation = await newConstellation.save();
 
-      await newConstellations.save();
-    }
-  });
-
-  res.redirect("/");
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
+
 
 router.delete('/:id', async (req, res) => {
   let constellations = schemas.constellations;
@@ -58,24 +57,22 @@ router.get('/:id/edit', async (req, res, next) => {
   }
 });
 
-router.post('/:id/edit', async (req, res) => {
+router.post("/:id/edit", async (req, res, next) => {
+  const constellationId = req.params.id;
+  const { constellationsName, constellationsDescription, constellationStars } = req.body;
+
   try {
-    const constellationId = req.params.id;
-    const update = {
-      name: req.body.constellationsName,
-      description: req.body.constellationsDescription
-    };
+    const constellation = await schemas.constellations.findById(constellationId);
+    constellation.name = constellationsName;
+    constellation.description = constellationsDescription;
+    constellation.stars = constellationStars;
 
-    const UpdatedConstellation = await schemas.constellations.findByIdAndUpdate(constellationId, update, { new: true });
+    await constellation.save();
 
-    if (!UpdatedConstellation) {
-      throw new Error('Constellation not found');
-    }
-
-    res.redirect('/');
+    res.redirect("/");
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error updating constellation');
+    next(err);
   }
 });
 

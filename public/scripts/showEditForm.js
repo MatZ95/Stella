@@ -1,19 +1,21 @@
-var currentForm = null; // Variable to keep track of the currently open form
+var editForms = document.querySelectorAll(".edit-form");
 
+// Hide all edit forms initially
+editForms.forEach(function (form) {
+  form.style.display = "none";
+});
+
+// Function to show/hide the edit form
 function showEditForm(id) {
-  var form = document.getElementById('edit-form-' + id);
+  var form = document.getElementById("edit-form-" + id);
 
-  // Close the previous form if it exists
-  if (currentForm) {
-    currentForm.style.display = "none";
-  }
+  // Toggle the display of the clicked form
+  form.style.display = form.style.display === "none" ? "block" : "none";
 
-  // Display the selected form
-  if (form.style.display === "none") {
-    form.style.display = "block";
-    currentForm = form; // Update the current form
-  } else {
-    form.style.display = "none";
-    currentForm = null; // Reset the current form
-  }
+  // Hide all other edit forms except the clicked form
+  editForms.forEach(function (otherForm) {
+    if (otherForm !== form) {
+      otherForm.style.display = "none";
+    }
+  });
 }

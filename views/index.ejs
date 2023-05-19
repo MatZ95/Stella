@@ -15,6 +15,9 @@
   <script src="/scripts/addFog.js"></script>
   <script src="/scripts/addRain.js"></script>
   <script src="/scripts/addClouds.js"></script>
+  <script src="/scripts/addConstellations.js"></script>
+  <script src="/scripts/updateConstellations.js"></script>
+  <script src="/scripts/ipdateSelectedStars.js"></script>
 </head>
 
 <body>
@@ -48,6 +51,7 @@
   <div id="container"></div>
   <video id="fog-video" src="/images/fog/fog-video.mp4" autoplay loop muted></video>
   <video id="rain-video" src="/images/rain/rain-video.mp4" autoplay loop muted></video>
+
   <div class="row">
     <div class="col-md-8">
       <form action="/stars/new" method="post">
@@ -59,6 +63,7 @@
         </p>
       </form>
     </div>
+
     <div class="col-md-4">
       <% stars.forEach(star=> { %>
         <form id="edit-form-<%= star._id %>" action="/stars/<%= star._id %>/edit" method="POST" style="display: none;">
@@ -107,60 +112,90 @@
     </tbody>
   </table>
 
-
   <div class="row">
     <div class="col-md-8">
       <form action="/constellations/new" method="post">
         <p>
           <input type="text" name="constellationsName" placeholder="Podaj nazwę konstelacji" />
           <input type="text" name="constellationsDescription" placeholder="Podaj opis konstelacji" />
+          <select name="constellationStars" multiple>
+            <% stars.forEach(star=> { %>
+              <option value="<%= star._id %>">
+                <%= star.name %>
+              </option>
+              <% }); %>
+          </select>
           <button type="submit">Dodaj</button>
         </p>
       </form>
     </div>
-    <div class="col-md-4">
+
+    <div class="col-md-4" id="edit-form-container">
       <% constellations.forEach(constellation=> { %>
-        <form id="edit-form-<%= constellation._id %>" action="/constellations/<%= constellation._id %>/edit" method="POST" style="display: none;">
+        <form id="edit-form-<%= constellation._id %>" class="edit-form" style="display: none;"
+          action="/constellations/<%= constellation._id %>/edit" method="POST">
           <p>
-            <input type="text" name="constellationsName" value="<%= constellation.name %>" placeholder="Podaj nazwę konstelacji" />
+            <input type="text" name="constellationsName" value="<%= constellation.name %>"
+              placeholder="Podaj nazwę konstelacji" />
             <input type="text" name="constellationsDescription" value="<%= constellation.description %>"
               placeholder="Podaj opis konstelacji" />
-            <button type="submit">Save</button>
+            <select name="constellationStars" multiple>
+              <% stars.forEach(star=> { %>
+                <% const isSelected=constellation.stars.includes(star._id.toString()); %>
+                  <option value="<%= star._id %>" <%=isSelected ? 'selected' : '' %>> <%= star.name %>
+                  </option>
+                  <% }); %>
+            </select>
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" onclick="updateConstellation('<%= constellation._id %>')">Save</button>
           </p>
         </form>
         <% }); %>
     </div>
   </div>
+
   <table class="table table-bordered" id="data-table">
     <thead>
       <tr>
         <th>Constellation Name</th>
         <th>Constellation Description</th>
+        <th>Number of stars</th>
+        <th>Stars</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-        <% constellations.forEach(constellation=> { %>
-          <tr>
-            <td>
-              <%= constellation.name %>
-            </td>
-            <td>
-              <%= constellation.description %>
-            </td>
-            <td>
-              <button type="button" onclick="showEditForm('<%= constellation._id %>')">Edit</button>
-              <form action="/constellations/<%= constellation._id %>?_method=DELETE" method="POST">
-                <button type="submit">Delete</button>
-              </form>
-            </td>
-          </tr>
-          <% }); %>
+      <% constellations.forEach(constellation=> { %>
+        <tr>
+          <td>
+            <%= constellation.name %>
+          </td>
+          <td>
+            <%= constellation.description %>
+          </td>
+          <td>
+            <%= constellation.numberOfStars %>
+          </td>
+          <td>
+            <% constellation.stars.forEach(star=> { %>
+              <% const foundStar=stars.find(s=> s._id.toString() === star.toString()); %>
+                <span>
+                  <%= foundStar ? foundStar.name : '' %>
+                </span><br>
+                <% }); %>
+          </td>
+          <td>
+            <button type="button" onclick="showEditForm('<%= constellation._id %>')">Edit</button>
+            <form action="/constellations/<%= constellation._id %>?_method=DELETE" method="POST">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
     </tbody>
   </table>
 
   <script src="/scripts/addStars.js"></script>
-  <script src="/scripts/addConstellations.js"></script>
 </body>
 
 </html>

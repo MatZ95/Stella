@@ -1,0 +1,21 @@
+var selectedStars = [];
+
+function selectStar(starId) {
+    var index = selectedStars.indexOf(starId);
+    if (index === -1) {
+        selectedStars.push(starId);
+    } else {
+        selectedStars.splice(index, 1);
+    }
+
+    updateSelectedStarsInput();
+}
+
+function updateSelectedStarsInput() {
+    var selectedStarsInput = document.getElementById("selectedStars");
+    selectedStarsInput.value = selectedStars.join(",");
+}
+
+var initialSelectedStars = [];
+selectedStars = initialSelectedStars;
+updateSelectedStarsInput();
