@@ -23,13 +23,19 @@
       <%= title %>
     </h3>
     <input type="hidden" id="num-stars">
+    <input type="hidden" id="num-constellations">
+
     <label for="moon-phase">Moon Phase:</label>
     <input type="range" id="moon-phase" min="0" max="30" value="15">
+
     <label for="cloudiness">Cloudiness:</label>
     <input type="range" id="cloudiness-slider" min="0" max="10" value="5">
+
     <div id="clouds"></div>
+
     <label for="fog">Fog:</label>
     <input type="range" id="fog-slider" min="0" max="1" value="0">
+
     <label for="rain">Rain:</label>
     <input type="range" id="rain-slider" min="0" max="1" value="0">
     <ul>
@@ -49,8 +55,8 @@
           <input type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" />
           <input type="text" name="starsDescription" placeholder="Podaj opis gwiazny" />
           <input type="text" name="starsConstellation" placeholder="Podaj konstelację" />
+          <button type="submit">Dodaj</button>
         </p>
-        <p><button type="submit">Dodaj</button></p>
       </form>
     </div>
     <div class="col-md-4">
@@ -62,8 +68,8 @@
               placeholder="Podaj opis gwiazdy" />
             <input type="text" name="starsConstellation" value="<%= star.constellation %>"
               placeholder="Podaj konstelację" />
+            <button type="submit">Save</button>
           </p>
-          <button type="submit">Save</button>
         </form>
         <% }); %>
     </div>
@@ -101,7 +107,60 @@
     </tbody>
   </table>
 
+
+  <div class="row">
+    <div class="col-md-8">
+      <form action="/constellations/new" method="post">
+        <p>
+          <input type="text" name="constellationsName" placeholder="Podaj nazwę konstelacji" />
+          <input type="text" name="constellationsDescription" placeholder="Podaj opis konstelacji" />
+          <button type="submit">Dodaj</button>
+        </p>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <% constellations.forEach(constellation=> { %>
+        <form id="edit-form-<%= constellation._id %>" action="/constellations/<%= constellation._id %>/edit" method="POST" style="display: none;">
+          <p>
+            <input type="text" name="constellationsName" value="<%= constellation.name %>" placeholder="Podaj nazwę konstelacji" />
+            <input type="text" name="constellationsDescription" value="<%= constellation.description %>"
+              placeholder="Podaj opis konstelacji" />
+            <button type="submit">Save</button>
+          </p>
+        </form>
+        <% }); %>
+    </div>
+  </div>
+  <table class="table table-bordered" id="data-table">
+    <thead>
+      <tr>
+        <th>Constellation Name</th>
+        <th>Constellation Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        <% constellations.forEach(constellation=> { %>
+          <tr>
+            <td>
+              <%= constellation.name %>
+            </td>
+            <td>
+              <%= constellation.description %>
+            </td>
+            <td>
+              <button type="button" onclick="showEditForm('<%= constellation._id %>')">Edit</button>
+              <form action="/constellations/<%= constellation._id %>?_method=DELETE" method="POST">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <% }); %>
+    </tbody>
+  </table>
+
   <script src="/scripts/addStars.js"></script>
+  <script src="/scripts/addConstellations.js"></script>
 </body>
 
 </html>

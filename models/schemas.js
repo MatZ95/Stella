@@ -9,20 +9,25 @@ let starsSchema = new schema({
   constellation: { type: String, require: true }
 });
 
+let constellationsSchema = new schema({
+  name: { type: String, require: true },
+  description: { type: String, require: true }
+});
+
 let usersSchema = new schema({
   login: { type: String, require: true },
   password: { type: String, require: true },
 });
 
 let stars = mongoose.model("stars", starsSchema, "stars");
+let constellations = mongoose.model("constellations", constellationsSchema, "constellations");
 let users = mongoose.model("users", usersSchema, "users");
-
-// let mySchemas = { stars: stars, users: users };
-
-// Powyżej szukaj gdyby był błąd
 
 module.exports = {
   starsSchema,
+  constellationsSchema,
   usersSchema,
-  stars
+  stars,
+  constellations,
+  users
 };
