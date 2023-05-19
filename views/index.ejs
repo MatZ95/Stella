@@ -142,7 +142,7 @@
             <select name="constellationStars" multiple>
               <% stars.forEach(star=> { %>
                 <% const isSelected=constellation.stars.includes(star._id.toString()); %>
-                  <option value="<%= star._id %>" <%=isSelected ? 'selected' : '' %>> <%= star.name %>
+                  <option value="<%= star._id %>"> <%= star.name %>
                   </option>
                   <% }); %>
             </select>
