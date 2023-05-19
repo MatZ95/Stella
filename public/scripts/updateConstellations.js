@@ -3,15 +3,18 @@ function updateConstellation(constellationId) {
     const formData = new FormData(form);
 
     fetch(`/constellations/${constellationId}/edit`, {
-        method: 'POST',
-        body: formData
+      method: 'POST',
+      body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-
-            console.log(data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-}
+      .then(response => {
+        if (response.ok) {
+          // Reload the page or perform any other action after successful submission
+          location.reload();
+        } else {
+          throw new Error('Failed to update constellation');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }

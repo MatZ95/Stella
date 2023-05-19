@@ -50,6 +50,8 @@ router.get('/:id/edit', async (req, res, next) => {
       throw new Error('Constellation not found');
     }
 
+    console.log()
+
     res.render('edit', { title: 'Edit Constellation', constellation: constellation });
   } catch (err) {
     console.error(err);
@@ -61,11 +63,17 @@ router.post("/:id/edit", async (req, res, next) => {
   const constellationId = req.params.id;
   const { constellationsName, constellationsDescription, constellationStars } = req.body;
 
+  console.log("constellationStars:", constellationStars);
+
+
   try {
     const constellation = await schemas.constellations.findById(constellationId);
+
     constellation.name = constellationsName;
     constellation.description = constellationsDescription;
     constellation.stars = constellationStars;
+    constellation.numberOfStars = constellationStars.length;
+
 
     await constellation.save();
 

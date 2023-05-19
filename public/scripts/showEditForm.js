@@ -1,6 +1,5 @@
 var editForms = document.querySelectorAll(".edit-form");
 
-// Hide all edit forms initially
 editForms.forEach(function (form) {
   form.style.display = "none";
 });
@@ -18,4 +17,5 @@ function showEditForm(id) {
       otherForm.style.display = "none";
     }
   });
+
 }

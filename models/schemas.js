@@ -18,32 +18,38 @@ let constellationsSchema = new schema({
 
 
 // Middleware to update numberOfStars before saving
-constellationsSchema.pre('save', function (next) {
-  this.numberOfStars = this.stars.length;
-  next();
+constellationsSchema.pre('save', async function (next) {
+  try {
+    const starsCount = await this.model('stars').countDocuments({ _id: { $in: this.stars } });
+    this.numberOfStars = starsCount;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Middleware to update numberOfStars before findOneAndUpdate
-constellationsSchema.pre('findOneAndUpdate', function () {
-  const updatedData = this.getUpdate();
-  const stars = updatedData.stars || [];
-  this.set('numberOfStars', stars.length);
+constellationsSchema.pre('findOneAndUpdate', async function () {
+  try {
+    const updatedData = this.getUpdate();
+    const starsCount = await this.model('stars').countDocuments({ _id: { $in: updatedData.stars } });
+    this.set('numberOfStars', starsCount);
+  } catch (error) {
+    throw error;
+  }
 });
 
-let usersSchema = new schema({
-  login: { type: String, require: true },
-  password: { type: String, require: true },
-});
+
+
+
+
 
 let stars = mongoose.model("stars", starsSchema, "stars");
 let constellations = mongoose.model("constellations", constellationsSchema, "constellations");
-let users = mongoose.model("users", usersSchema, "users");
 
 module.exports = {
   starsSchema,
   constellationsSchema,
-  usersSchema,
   stars,
-  constellations,
-  users
+  constellations
 };
