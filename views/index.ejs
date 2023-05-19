@@ -63,13 +63,19 @@
   <video id="rain-video" src="/images/rain/rain-video.mp4" autoplay loop muted></video>
 
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-10">
       <form action="/stars/new" method="post">
         <p>
-          <input type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" />
-          <input type="text" name="starsDescription" placeholder="Podaj opis gwiazny" />
-          <input type="text" name="starsConstellation" placeholder="Podaj konstelację" />
-          <button type="submit" class="btn btn-primary">Dodaj</button>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="starsDescription" placeholder="Podaj opis gwiazny" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="starsConstellation" placeholder="Podaj konstelację" />
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj</button>
         </p>
       </form>
     </div>
@@ -112,7 +118,41 @@
             <%= star.constellation %>
           </td>
           <td>
-            <button type="button" class="btn btn-primary" onclick="showEditForm('<%= star._id %>')">Edit</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#editModal-<%= star._id %>">Edit</button>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal-<%= star._id %>" tabindex="-1"
+              aria-labelledby="editModalLabel-<%= star._id %>" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel-<%= star._id %>">Edit Star</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Add your edit form content here -->
+                    <form id="edit-form-<%= star._id %>" class="edit-form" action="/stars/<%= star._id %>/edit"
+                      method="POST">
+                      <p>
+                        <input type="text" name="starsName" value="<%= star.name %>"
+                          placeholder="Podaj nazwę gwiazdy" />
+                        <input type="text" name="starsDescription" value="<%= star.description %>"
+                          placeholder="Podaj opis gwiazdy" />
+                        <input type="text" name="starsConstellation" value="<%= star.constellation %>"
+                          placeholder="Podaj konstelację" />
+                        <input type="hidden" name="_method" value="PUT">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </p>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <form action="/stars/<%= star._id %>?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-danger">Delete</button>
             </form>
@@ -126,16 +166,21 @@
     <div class="col-md-8">
       <form action="/constellations/new" method="post">
         <p>
-          <input type="text" name="constellationsName" placeholder="Podaj nazwę konstelacji" />
-          <input type="text" name="constellationsDescription" placeholder="Podaj opis konstelacji" />
-          <select class="selectpicker" name="constellationStars" multiple>
-            <% stars.forEach(star=> { %>
-              <option value="<%= star._id %>">
-                <%= star.name %>
-              </option>
-              <% }); %>
-          </select>
-          <button type="submit" class="btn btn-primary">Dodaj</button>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="constellationsName" placeholder="Podaj nazwę konstelacji" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="constellationsDescription"
+            placeholder="Podaj opis konstelacji" />
+        </div>
+        <select class="selectpicker" name="constellationStars" multiple>
+          <% stars.forEach(star=> { %>
+            <option value="<%= star._id %>">
+              <%= star.name %>
+            </option>
+            <% }); %>
+        </select>
+        <button type="submit" class="btn btn-primary">Dodaj</button>
         </p>
       </form>
     </div>
