@@ -173,7 +173,7 @@
           <input class="form-control" type="text" name="constellationsDescription"
             placeholder="Podaj opis konstelacji" />
         </div>
-        <select class="selectpicker" name="constellationStars" multiple>
+        <select class="selectpicker" multiple data-actions-box="true" name="constellationStars">
           <% stars.forEach(star=> { %>
             <option value="<%= star._id %>">
               <%= star.name %>
@@ -184,8 +184,6 @@
         </p>
       </form>
     </div>
-
-
 
     <div class="col-md-4" id="edit-form-container">
       <% constellations.forEach(constellation=> { %>
@@ -300,6 +298,7 @@
   <script src="/scripts/addStars.js"></script>
   <script src="/scripts/addConstellations.js"></script>
   <script src="/scripts/updateConstellations.js"></script>
+  <script src="/scripts/selectPicker.js"></script>
 </body>
 
 </html>

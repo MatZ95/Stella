@@ -9,39 +9,56 @@ fetch('/constellations/count')
     })
     .catch(err => console.error(err));
 
-    function addConstellations(numConstellations) {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
+function addConstellations(numConstellations) {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
 
-        const constellationImages = [
-            '/images/stars/1.png',
-            '/images/stars/2.png',
-            '/images/stars/3.png',
-            '/images/stars/4.png',
-            '/images/stars/5.png'
-        ];
+    const constellationImages = [
+        '/images/stars/1.png',
+        '/images/stars/2.png',
+        '/images/stars/3.png',
+        '/images/stars/4.png',
+        '/images/stars/5.png'
+    ];
 
     fetch('/constellations/constellationsdata')
-    .then(res => res.json())
-    .then(data => {
-        for (let i = 0; i < numConstellations; i++) {
-            const constellation = document.createElement('img');
-            constellation.classList.add('constellation');
+        .then(res => res.json())
+        .then(data => {
+            for (let i = 0; i < numConstellations; i++) {
+                const constellation = document.createElement('img');
+                constellation.classList.add('constellation');
 
-            const randomImageIndex = Math.floor(Math.random() * constellationImages.length);
-            const constellationImagePath = constellationImages[randomImageIndex];
+                const randomImageIndex = Math.floor(Math.random() * constellationImages.length);
+                const constellationImagePath = constellationImages[randomImageIndex];
 
-            constellation.src = constellationImagePath;
+                constellation.src = constellationImagePath;
 
-            constellation.style.left = Math.floor(Math.random() * screenWidth) + 'px';
-            constellation.style.top = Math.floor(Math.random() * screenHeight) + 'px';
+                constellation.style.left = Math.floor(Math.random() * screenWidth) + 'px';
+                constellation.style.top = Math.floor(Math.random() * screenHeight) + 'px';
 
-            const { name, description } = data[i % data.length];
+                const { name, description, stars } = data[i % data.length];
 
-            constellation.title = `Constellation ${i + 1}\nName: ${name}\nDescription: ${description}`;
+                // Fetch star data using star IDs
+                fetch('/stars/stardata', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ starIds: stars })
+                })
+                .then(res => res.json())
+                .then(starData => {
+                    const numberOfStars = starData.length;
+                    const constellationImageIndex = Math.min(numberOfStars, constellationImages.length - 1);
+                    constellation.src = constellationImages[constellationImageIndex];
 
-            document.body.appendChild(constellation);
-        }
-    })
-    .catch(err => console.error(err));
+                    const starNames = starData.map(star => star.name).join(', ');
+                    constellation.title = `Constellation ${i + 1}\nName: ${name}\nDescription: ${description}\nStars: ${starNames}`;
+                })
+                .catch(err => console.error(err));
+
+                document.body.appendChild(constellation);
+            }
+        })
+        .catch(err => console.error(err));
 }

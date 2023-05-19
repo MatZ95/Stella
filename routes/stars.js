@@ -102,4 +102,15 @@ router.get('/stardata', async (req, res, next) => {
   }
 });
 
+router.post('/stardata', async (req, res, next) => {
+  try {
+    const { starIds } = req.body;
+    const stars = await schemas.stars.find({ _id: { $in: starIds } });
+    res.send(stars);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;
