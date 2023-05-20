@@ -18,6 +18,16 @@ body {
   z-index: 1;
 }
 
+.dropdown-item {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 #fog-video {
   position: fixed;
   top: 0;
@@ -104,10 +114,6 @@ form {
   vertical-align: top;
   margin-right: 20px;
   z-index: 4;
-}
-
-#edit-form {
-  float: right;
 }
 
 .navbar h3 {
