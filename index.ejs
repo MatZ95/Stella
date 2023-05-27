@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/scripts/moonPhases.js"></script>
+  <script src="/scripts/addFog.js"></script>
+  <script src="/scripts/addRain.js"></script>
+  <script src="/scripts/addClouds.js"></script>
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+  <nav class="navbar">
+    <h3>
+      <%= title %>
+    </h3>
+    <input type="hidden" id="num-stars">
+    <input type="hidden" id="num-constellations">
+
+    <label for="moon-phase">Moon Phase:</label>
+    <input type="range" id="moon-phase" min="0" max="30" value="15">
+
+    <label for="cloudiness">Cloudiness:</label>
+    <input type="range" id="cloudiness-slider" min="0" max="10" value="5">
+
+    <div id="clouds"></div>
+
+    <label for="fog">Fog:</label>
+    <input type="range" id="fog-slider" min="0" max="1" value="0">
+
+    <label for="rain">Rain:</label>
+    <input type="range" id="rain-slider" min="0" max="1" value="0">
+  </nav>
+
+  <div id="container"></div>
+  <video id="fog-video" src="/images/fog/fog-video.mp4" autoplay loop muted></video>
+  <video id="rain-video" src="/images/rain/rain-video.mp4" autoplay loop muted></video>
+
+  <div class="row">
+    <div class="col-md-10">
+      <form action="/stars/new" method="post">
+        <p>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="starsName" placeholder="Star Name" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="starsDescription" placeholder="Star Description" />
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Add </button>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <table class="table table-hover" id="data-table">
+    <thead>
+      <tr>
+        <th>Star Name</th>
+        <th>Star Description</th>
+        
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% stars.forEach(star=> { %>
+        <tr>
+          <td>
+            <%= star.name %>
+          </td>
+          <td>
+            <%= star.description %>
+          </td>
+         
+          <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#editModal-<%= star._id %>">Edit</button>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal-<%= star._id %>" tabindex="-1"
+              aria-labelledby="editModalLabel-<%= star._id %>" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel-<%= star._id %>">Edit Star</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Add your edit form content here -->
+                    <form id="edit-form-<%= star._id %>" class="edit-form" action="/stars/<%= star._id %>/edit"
+                      method="POST">
+                      <p>
+                        <input type="text" name="starsName" value="<%= star.name %>"
+                          placeholder="Podaj nazwę gwiazdy" />
+                        <input type="text" name="starsDescription" value="<%= star.description %>"
+                          placeholder="Podaj opis gwiazdy" />
+                        <input type="text" name="starsConstellation" value="<%= star.constellation %>"
+                          placeholder="Podaj konstelację" />
+                        <input type="hidden" name="_method" value="PUT">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </p>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <form action="/stars/<%= star._id %>?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col-md-8">
+      <form action="/constellations/new" method="post">
+        <p>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="constellationsName" placeholder="Constelation Name" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" type="text" name="constellationsDescription"
+            placeholder="Constelation Description" />
+        </div>
+
+        <div class="input-group mb-2">
+          <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="constellationDropdown"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span id="selectedCount">Select Stars</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="constellationDropdown">
+              <% stars.forEach(star=> { %>
+                <label class="dropdown-item">
+                  <input type="checkbox" name="constellationStars" value="<%= star._id %>">
+                  <%= star.name %>
+                </label>
+                <% }); %>
+            </div>
+          </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Add</button>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <table class="table table-hover" id="data-table">
+    <thead>
+      <tr>
+        <th>Constellation Name</th>
+        <th>Constellation Description</th>
+        <th>Number of stars</th>
+        <th>Stars</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% constellations.forEach(constellation=> { %>
+        <tr>
+          <td>
+            <%= constellation.name %>
+          </td>
+          <td>
+            <%= constellation.description %>
+          </td>
+          <td>
+            <%= constellation.numberOfStars %>
+          </td>
+          <td>
+            <% constellation.stars.forEach(star=> { %>
+              <% const foundStar=stars.find(s=> s._id.toString() === star.toString()); %>
+                <span>
+                  <%= foundStar ? foundStar.name : '' %>
+                </span><br>
+                <% }); %>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#editModal-<%= constellation._id %>">Edit</button>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal-<%= constellation._id %>" tabindex="-1"
+              aria-labelledby="editModalLabel-<%= constellation._id %>" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel-<%= constellation._id %>">Edit Constellation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Add your edit form content here -->
+                    <form id="edit-form-<%= constellation._id %>" class="edit-form"
+                      action="/constellations/<%= constellation._id %>/edit" method="POST">
+                      <p>
+                        <input type="text" name="constellationsName" value="<%= constellation.name %>"
+                          placeholder="Podaj nazwę konstelacji" />
+                        <input type="text" name="constellationsDescription" value="<%= constellation.description %>"
+                          placeholder="Podaj opis konstelacji" />
+
+                        <select name="constellationStars" multiple>
+                          <% stars.forEach(star=> { %>
+                            <option value="<%= star._id %>" <% if (constellation.stars.includes(star._id)) { %>selected
+                              <% } %>>
+                                <%= star.name %>
+                            </option>
+                            <% }); %>
+                        </select>
+
+                        <input type="hidden" name="_method" value="PUT">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                      </p>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary save-changes-button" data-constellation-id="<%= constellation._id %>">Save changes</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <form action="/constellations/<%= constellation._id %>?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+    </tbody>
+  </table>
+
+  <script src="/scripts/addStars.js"></script>
+  <script src="/scripts/addConstellations.js"></script>
+  <script src="/scripts/updateConstellations.js"></script>
+  <script src="/scripts/dropdownScript.js"></script>
+</body>
+
+</html>
