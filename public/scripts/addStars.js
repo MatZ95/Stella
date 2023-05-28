@@ -47,7 +47,7 @@ function addStars(numStars) {
 
                 const { name, description, constellation } = data[i % data.length];
 
-                star.title = `Star ${i + 1}\nName: ${name}\nDescription: ${description}\nConstellation: ${constellation}`;
+                star.title = `Star ${i + 1}\nName: ${name}\nDescription: ${description}`;
 
                 star.addEventListener('click', () => {
                     if (star.classList.contains('glow')) {

@@ -50,11 +50,6 @@
 
     <label for="rain">Rain:</label>
     <input type="range" id="rain-slider" min="0" max="1" value="0">
-    <ul>
-      <li><a href="#">Link1</a></li>
-      <li><a href="#">Link2</a></li>
-      <li><a href="#">Link3</a></li>
-    </ul>
   </nav>
 
   <div id="container"></div>
@@ -66,15 +61,13 @@
       <form action="/stars/new" method="post">
         <p>
         <div class="mb-2">
-          <input class="form-control" type="text" name="starsName" placeholder="Podaj nazwę gwiazdy" />
+          <input class="form-control" type="text" name="starsName" placeholder="Star Name" />
         </div>
         <div class="mb-2">
-          <input class="form-control" type="text" name="starsDescription" placeholder="Podaj opis gwiazny" />
+          <input class="form-control" type="text" name="starsDescription" placeholder="Star Description" />
         </div>
-        <div class="mb-2">
-          <input class="form-control" type="text" name="starsConstellation" placeholder="Podaj konstelację" />
-        </div>
-        <button type="submit" class="btn btn-primary">Dodaj</button>
+        
+        <button type="submit" class="btn btn-primary">Add </button>
         </p>
       </form>
     </div>
@@ -85,7 +78,7 @@
       <tr>
         <th>Star Name</th>
         <th>Star Description</th>
-        <th>Star Constellation</th>
+        
         <th></th>
       </tr>
     </thead>
@@ -98,9 +91,7 @@
           <td>
             <%= star.description %>
           </td>
-          <td>
-            <%= star.constellation %>
-          </td>
+         
           <td>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
               data-bs-target="#editModal-<%= star._id %>">Edit</button>
@@ -151,11 +142,11 @@
       <form action="/constellations/new" method="post">
         <p>
         <div class="mb-2">
-          <input class="form-control" type="text" name="constellationsName" placeholder="Podaj nazwę konstelacji" />
+          <input class="form-control" type="text" name="constellationsName" placeholder="Constelation Name" />
         </div>
         <div class="mb-2">
           <input class="form-control" type="text" name="constellationsDescription"
-            placeholder="Podaj opis konstelacji" />
+            placeholder="Constelation Description" />
         </div>
 
         <div class="input-group mb-2">
@@ -176,7 +167,7 @@
         </div>
 
 
-        <button type="submit" class="btn btn-primary">Dodaj</button>
+        <button type="submit" class="btn btn-primary">Add</button>
         </p>
       </form>
     </div>

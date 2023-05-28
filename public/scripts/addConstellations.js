@@ -14,13 +14,13 @@ function addConstellations(numConstellations) {
     const screenHeight = window.innerHeight;
 
     const constellationImages = [
-        '/images/stars/1.png',
-        '/images/stars/2.png',
-        '/images/stars/3.png',
-        '/images/stars/4.png',
-        '/images/stars/5.png'
+        '/images/constelation/C1.png',
+        '/images/constelation/C2.png',
+        '/images/constelation/C3.png',
+        '/images/constelation/C4.png',
+        '/images/constelation/C5.png'
     ];
-
+    
     fetch('/constellations/constellationsdata')
         .then(res => res.json())
         .then(data => {
@@ -30,13 +30,23 @@ function addConstellations(numConstellations) {
 
                 const randomImageIndex = Math.floor(Math.random() * constellationImages.length);
                 const constellationImagePath = constellationImages[randomImageIndex];
-
+                
                 constellation.src = constellationImagePath;
 
                 constellation.style.left = Math.floor(Math.random() * screenWidth) + 'px';
                 constellation.style.top = Math.floor(Math.random() * screenHeight) + 'px';
 
                 const { name, description, stars } = data[i % data.length];
+
+                constellation.addEventListener('click', () => {
+                    if (constellation.classList.contains('glow')) {
+                        constellation.src = constellationImagePath;
+                        constellation.classList.remove('glow');
+                    } else {
+                        constellation.src = constellationGlowImagesPath;
+                        constellation.classList.add('glow');
+                    }
+                });
 
                 // Fetch star data using star IDs
                 fetch('/stars/stardata', {
